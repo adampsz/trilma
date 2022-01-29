@@ -1,0 +1,33 @@
+extends layout
+
+block data
+    - title = 'Play'
+
+block scripts
+    script(defer, src='./static/index.js')
+
+block content
+    div#game
+        svg.board
+            defs
+                symbol#piece(width=20, height=20, viewBox='0 0 10 10', overflow='visible')
+                    circle.hover(r=10)
+                    circle(r=7, stroke-width=2)
+                    circle(r=10, opacity=0)
+
+                symbol#dot(width=20, height=20, viewBox='0 0 10 10', overflow='visible')
+                    circle.hover(r=10)
+                    circle(r=3, stroke-width=2)
+                    circle(r=10, opacity=0)
+
+            path.outline
+            g.dots
+            g.pieces
+
+        div.status
+            h1 #{game.name}
+            ul.players
+            div.buttons
+                button(name = 'ready', hidden) Ready
+                button(name = 'next', hidden) Done
+                a(href='/join', name='finish', class='button', hidden) New Game

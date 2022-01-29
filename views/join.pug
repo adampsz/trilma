@@ -1,0 +1,12 @@
+extends layout
+
+block data
+    - title = "Join"
+
+block content
+    form(method="post")
+        input(name="name" required autocomplete="off")
+        button(type="submit") Create
+
+    ul: each game in games
+        li: a(href=`/join/${ game.id }`) #{game.name} (#{game.players.all.map(p => p.name).join(', ') || 'no players'})

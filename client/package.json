@@ -1,0 +1,9 @@
+{
+  "name": "trilma-client",
+  "version": "0.0.0",
+  "private": true,
+  "devDependencies": {
+    "normalize.css": "^8.0.1",
+    "socket.io-client": "^4.4.1"
+  }
+}

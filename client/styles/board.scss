@@ -1,0 +1,62 @@
+.board {
+  overflow: hidden;
+  object-fit: contain;
+
+  stroke: $foreground;
+
+  & .outline {
+    fill: none;
+    stroke: rgba($foreground, 0.3);
+    stroke-linecap: round;
+    stroke-width: 3px;
+    stroke-dasharray: 5px 10px 5px 30px;
+    stroke-dashoffset: -15px;
+  }
+
+  & [data-xy] {
+    cursor: pointer;
+    fill: $background;
+
+    stroke-width: 2px;
+    color: rgba($primary, 0);
+    transition: color $transition, x $transition, y $transition;
+
+    &.hinted {
+      color: $secondary;
+    }
+
+    &:hover,
+    &.selected {
+      color: $primary;
+    }
+  }
+
+  & .dots [data-xy] {
+    stroke: $background;
+    fill: $foreground;
+
+    @each $name, $color in $colors {
+      &[data-color='#{$name}'] {
+        fill: $color;
+        stroke: $foreground;
+      }
+    }
+  }
+
+  & .pieces [data-xy] {
+    @each $name, $color in $colors {
+      &[data-color='#{$name}'] {
+        stroke: $foreground;
+        fill: $color;
+      }
+    }
+  }
+}
+
+#piece,
+#dot {
+  & .hover {
+    stroke: currentColor;
+    fill: none;
+  }
+}

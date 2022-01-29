@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    form#greet(method="post")
+        h1 What is your name?
+        input(name="name" required autocomplete="off" autofocus)
+        button(type="submit") Enter

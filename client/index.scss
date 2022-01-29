@@ -1,0 +1,20 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+$background: #fafaf5;
+$foreground: #2b303a;
+$primary: #3777ff;
+$secondary: #ffcf00;
+
+$transition: 0.3s;
+
+$colors: (
+  1: #fa003f,
+  2: #00916e,
+  3: #3777ff,
+  4: #ffcf00,
+  5: #515968,
+  6: #fafafa,
+);
+
+@import './styles/index';
