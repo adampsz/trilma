@@ -50,7 +50,7 @@ const MINI = `
 `;
 
 export default class Board extends Base {
-  constructor(tpl = MINI) {
+  constructor(tpl = NORMAL) {
     super();
 
     const lines = tpl.split('\n').filter((l) => l);

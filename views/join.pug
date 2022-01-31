@@ -4,9 +4,20 @@ block data
     - title = "Join"
 
 block content
-    form(method="post")
-        input(name="name" required autocomplete="off")
-        button(type="submit") Create
+    div#join
+        form.create(method="post")
+            h2 Create your game&hellip;
 
-    ul: each game in games
-        li: a(href=`/join/${ game.id }`) #{game.name} (#{game.players.all.map(p => p.name).join(', ') || 'no players'})
+            input.input(name="name" required placeholder="Game name" autocomplete="off")
+            
+            button.button(type="submit") Create
+        
+        div.join
+            h2 &hellip;or join other players!
+            if games.length > 0
+                ul: each game in games
+                    li: a(href=`/join/${ game.id }`)
+                        | #{game.name}
+                        | #[em.hint (#{game.players.all.map(p => p.name).join(', ') || 'no players'})]
+            else
+                p #[em.hint (There no games at the moment)]

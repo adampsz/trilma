@@ -6,7 +6,7 @@
 
   & .outline {
     fill: none;
-    stroke: rgba($foreground, 0.3);
+    stroke: $hint;
     stroke-linecap: round;
     stroke-width: 3px;
     stroke-dasharray: 5px 10px 5px 30px;

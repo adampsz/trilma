@@ -95,8 +95,6 @@ export default class Game extends Base {
     socket.on('disconnect', () => {
       const action: Action = { type: 'disconnect', player: id };
       this.verify(action) && this.commit(action);
-
-      if (this.players.all.every((p) => !p.active)) Game.all.delete(this.id);
     });
   }
 
@@ -131,3 +129,8 @@ export default class Game extends Base {
     };
   }
 }
+
+Game.all.delete = function (...args) {
+  debugger;
+  return Map.prototype.delete.call(this, ...args);
+};
