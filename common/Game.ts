@@ -132,9 +132,13 @@ export default class Game implements Data {
         const player = this.player(this.state.player)!;
         const winners = this.board.winners();
 
-        if (winners.has(player.color) || winners.size >= this.players.all.length - 1) {
+        if (winners.has(player.color)) {
           const place = Math.max(...this.players.all.map((p) => p.finished)) + 1;
           player.finished = place;
+        }
+
+        if (winners.size === this.players.all.length - 1) {
+          for (const player of this.players.all) player.finished ||= this.players.all.length;
         }
 
         const players = this.players.all.filter((p) => p.finished === 0);
