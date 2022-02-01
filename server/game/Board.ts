@@ -1,5 +1,5 @@
-import Base, { CELL_NONE } from '@/common/Board';
-import type { Board as Data } from '@/common/types';
+import Base, { CELL_NONE } from "@/common/Board";
+import type { Board as Data } from "@/common/types";
 
 const NORMAL = `
     1
@@ -53,7 +53,7 @@ export default class Board extends Base {
   constructor(tpl = NORMAL) {
     super();
 
-    const lines = tpl.split('\n').filter((l) => l);
+    const lines = tpl.split("\n").filter((l) => l);
 
     this.size = lines.reduce((len, line) => Math.max(len, line.length), 0) + 2;
 
@@ -61,8 +61,8 @@ export default class Board extends Base {
     this.data.fill(CELL_NONE);
 
     for (const [y, line] of lines.entries())
-      for (const [x, c] of line.split('').entries()) {
-        const i = '.123456'.indexOf(c);
+      for (const [x, c] of line.split("").entries()) {
+        const i = ".123456".indexOf(c);
         this.set([x + 1, y + 1], i < 0 ? CELL_NONE : i);
       }
 
@@ -70,6 +70,10 @@ export default class Board extends Base {
   }
 
   toJSON(): Data {
-    return { size: this.size, data: new Uint8Array(this.data), homes: new Uint8Array(this.homes) };
+    return {
+      size: this.size,
+      data: new Uint8Array(this.data),
+      homes: new Uint8Array(this.homes),
+    };
   }
 }

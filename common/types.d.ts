@@ -28,7 +28,7 @@ export type State = Tagged<{
   selected: { player: string; piece: [number, number] };
   jumped: { player: string; piece: [number, number] };
   stepped: { player: string };
-  finished: {};
+  finished: unknown;
 }>;
 
 export interface Game {
@@ -53,15 +53,15 @@ export type Action = Tagged<{
 export type BoardAction = Tagged<{
   init: { colors: number[] };
   step: { color: number; from: Vec2; to: Vec2 };
-  jump: { color: number; from: Vec2; to: vec2 };
+  jump: { color: number; from: Vec2; to: Vec2 };
 }>;
 
 export interface ServerEvents {
-  'game:init': (player: string, data: Game) => void;
-  'game:sync': (data: Game) => void;
-  'game:action': (action: Action) => void;
+  "game:init": (player: string, data: Game) => void;
+  "game:sync": (data: Game) => void;
+  "game:action": (action: Action) => void;
 }
 
 export interface ClientEvents {
-  'player:action': (action: Action) => void;
+  "player:action": (action: Action) => void;
 }

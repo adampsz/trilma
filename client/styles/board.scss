@@ -1,24 +1,22 @@
 .board {
   overflow: hidden;
   object-fit: contain;
-
   stroke: $foreground;
 
   & .outline {
     fill: none;
     stroke: $hint;
-    stroke-linecap: round;
-    stroke-width: 3px;
     stroke-dasharray: 5px 10px 5px 30px;
     stroke-dashoffset: -15px;
+    stroke-linecap: round;
+    stroke-width: 3px;
   }
 
   & [data-xy] {
+    color: rgba($primary, 0);
     cursor: pointer;
     fill: $background;
-
     stroke-width: 2px;
-    color: rgba($primary, 0);
     transition: color $transition, x $transition, y $transition;
 
     &.hinted {
@@ -32,11 +30,11 @@
   }
 
   & .dots [data-xy] {
-    stroke: $background;
     fill: $foreground;
+    stroke: $background;
 
     @each $name, $color in $colors {
-      &[data-color='#{$name}'] {
+      &[data-color="#{$name}"] {
         fill: $color;
         stroke: $foreground;
       }
@@ -45,9 +43,9 @@
 
   & .pieces [data-xy] {
     @each $name, $color in $colors {
-      &[data-color='#{$name}'] {
-        stroke: $foreground;
+      &[data-color="#{$name}"] {
         fill: $color;
+        stroke: $foreground;
       }
     }
   }
@@ -56,7 +54,7 @@
 #piece,
 #dot {
   & .hover {
-    stroke: currentColor;
     fill: none;
+    stroke: currentcolor;
   }
 }

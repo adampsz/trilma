@@ -1,4 +1,4 @@
-import type { Board as Data, BoardAction, Vec2 } from './types';
+import type { Board as Data, BoardAction, Vec2 } from "./types";
 
 export const STEPS: Vec2[] = [
   [1, 0],
@@ -40,16 +40,20 @@ export default class Board implements Data {
   }
 
   verify(a: BoardAction): boolean {
-    if (a.type === 'init') return true;
+    if (a.type === "init") return true;
 
-    if (a.type === 'step') {
-      if (this.get(a.from) !== a.color || this.get(a.to) !== CELL_EMPTY) return false;
-      for (const [dx, dy] of STEPS) if (a.from[0] + dx === a.to[0] && a.from[1] + dy === a.to[1]) return true;
+    if (a.type === "step") {
+      if (this.get(a.from) !== a.color || this.get(a.to) !== CELL_EMPTY)
+        return false;
+      for (const [dx, dy] of STEPS)
+        if (a.from[0] + dx === a.to[0] && a.from[1] + dy === a.to[1])
+          return true;
       return false;
     }
 
-    if (a.type === 'jump') {
-      if (this.get(a.from) !== a.color || this.get(a.to) !== CELL_EMPTY) return false;
+    if (a.type === "jump") {
+      if (this.get(a.from) !== a.color || this.get(a.to) !== CELL_EMPTY)
+        return false;
 
       for (const [dx, dy] of STEPS)
         if (a.from[0] + 2 * dx === a.to[0] && a.from[1] + 2 * dy === a.to[1])
@@ -62,20 +66,26 @@ export default class Board implements Data {
   }
 
   commit(a: BoardAction) {
-    if (a.type === 'init') {
+    if (a.type === "init") {
       const colors = this.colors();
-      const map = new Array(colors.length).fill(CELL_EMPTY);
-      a.colors.forEach((c, i) => (map[Math.floor((i / a.colors.length) * map.length)] = c));
+      const map = new Array<number>(colors.length).fill(CELL_EMPTY);
+      a.colors.forEach(
+        (c, i) => (map[Math.floor((i / a.colors.length) * map.length)] = c)
+      );
 
       for (let i = 0; i < this.data.length; i++) {
         if (Board.isPiece(this.data[i])) {
           this.data[i] = map[colors.indexOf(this.data[i])];
-          this.homes[i] = map[(colors.indexOf(this.homes[i]) + Math.floor(map.length / 2)) % map.length];
+          this.homes[i] =
+            map[
+              (colors.indexOf(this.homes[i]) + Math.floor(map.length / 2)) %
+                map.length
+            ];
         }
       }
     }
 
-    if (a.type === 'step' || a.type === 'jump') {
+    if (a.type === "step" || a.type === "jump") {
       this.set(a.from, CELL_EMPTY);
       this.set(a.to, a.color);
     }
@@ -92,7 +102,9 @@ export default class Board implements Data {
     if (!from) {
       return new Array(this.data.length)
         .fill(0)
-        .flatMap((_, i) => this.steps(color, [Math.floor(i / this.size), i % this.size]));
+        .flatMap((_, i) =>
+          this.steps(color, [Math.floor(i / this.size), i % this.size])
+        );
     }
 
     if (this.get(from) !== color) return [];
@@ -111,7 +123,9 @@ export default class Board implements Data {
     if (!from) {
       return new Array(this.data.length)
         .fill(0)
-        .flatMap((_, i) => this.jumps(color, [Math.floor(i / this.size), i % this.size]));
+        .flatMap((_, i) =>
+          this.jumps(color, [Math.floor(i / this.size), i % this.size])
+        );
     }
 
     if (this.get(from) !== color) return [];
@@ -144,7 +158,8 @@ export default class Board implements Data {
     }
 
     const winners = new Set<number>();
-    for (let i = 0; i < FILLED.length; i++) if (FILLED[i] && TARGET[i]) winners.add(i);
+    for (let i = 0; i < FILLED.length; i++)
+      if (FILLED[i] && TARGET[i]) winners.add(i);
     return winners;
   }
 }

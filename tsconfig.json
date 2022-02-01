@@ -2,11 +2,13 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
+    "allowJs": true,
     "esModuleInterop": true,
 
     "strict": true,
     "skipLibCheck": true,
 
+    "outDir": "./server/build",
     "sourceMap": true,
     "forceConsistentCasingInFileNames": true,
 
@@ -14,5 +16,12 @@
     "paths": {
       "@/*": ["./*"]
     }
-  }
+  },
+  "include": [
+    "./client",
+    "./server",
+    "./common",
+    "./webpack.config.js",
+    "./.eslintrc.js"
+  ]
 }

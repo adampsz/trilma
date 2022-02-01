@@ -1,6 +1,6 @@
-import Board from './Board';
-import { assume, unreachable } from './utils';
-import type { Game as Data, Action, Players, Player, State } from './types';
+import Board from "./Board";
+import { assume, unreachable } from "./utils";
+import type { Game as Data, Action, Players, State, Player } from "./types";
 
 export default class Game implements Data {
   state: State;
@@ -8,7 +8,7 @@ export default class Game implements Data {
   players: Players;
 
   constructor() {
-    this.state = { type: 'waiting', ready: [] };
+    this.state = { type: "waiting", ready: [] };
     this.players = { all: [] };
     this.board = new Board();
   }
@@ -17,58 +17,71 @@ export default class Game implements Data {
     const t = a.type;
 
     switch (t) {
-      case 'join':
-        return this.state.type === 'waiting' || this.players.all.some((p) => p.id === a.player.id);
+      case "join":
+        return (
+          this.state.type === "waiting" ||
+          this.players.all.some((p) => p.id === a.player.id)
+        );
 
-      case 'ready':
-        return this.state.type === 'waiting' && !!this.player(a.player) && !this.state.ready.includes(a.player);
+      case "ready":
+        return (
+          this.state.type === "waiting" &&
+          !!this.player(a.player) &&
+          !this.state.ready.includes(a.player)
+        );
 
-      case 'leave':
+      case "leave":
         return true;
 
-      case 'disconnect':
+      case "disconnect":
         return !!this.player(a.player);
 
-      case 'init':
+      case "init":
         return (
-          this.state.type === 'waiting' &&
+          this.state.type === "waiting" &&
           this.players.all.length >= 1 &&
           this.players.all.every(({ id }) => a.players.includes(id)) &&
           a.players.every((id) => this.player(id)) &&
           new Set(this.state.ready).size === this.players.all.length
         );
 
-      case 'next':
+      case "next":
         if (
-          this.state.type !== 'select' &&
-          this.state.type !== 'selected' &&
-          this.state.type !== 'stepped' &&
-          this.state.type !== 'jumped'
+          this.state.type !== "select" &&
+          this.state.type !== "selected" &&
+          this.state.type !== "stepped" &&
+          this.state.type !== "jumped"
         ) {
           return false;
         } else {
           return this.state.player === a.player;
         }
 
-      case 'select': {
-        if (this.state.type !== 'select' && this.state.type !== 'selected') return false;
+      case "select": {
+        if (this.state.type !== "select" && this.state.type !== "selected")
+          return false;
         if (this.state.player !== a.player) return false;
         const color = this.player(a.player)?.color;
         return color === this.board.get(a.piece);
       }
 
-      case 'step': {
-        if (this.state.type !== 'selected') return false;
+      case "step": {
+        if (this.state.type !== "selected") return false;
         if (this.state.player !== a.player) return false;
         const color = this.player(a.player)?.color;
-        return !!color && this.board.verify({ ...a, color, from: this.state.piece });
+        return (
+          !!color && this.board.verify({ ...a, color, from: this.state.piece })
+        );
       }
 
-      case 'jump': {
-        if (this.state.type !== 'selected' && this.state.type !== 'jumped') return false;
+      case "jump": {
+        if (this.state.type !== "selected" && this.state.type !== "jumped")
+          return false;
         if (this.state.player !== a.player) return false;
         const color = this.player(a.player)?.color;
-        return !!color && this.board.verify({ ...a, color, from: this.state.piece });
+        return (
+          !!color && this.board.verify({ ...a, color, from: this.state.piece })
+        );
       }
 
       default:
@@ -80,95 +93,123 @@ export default class Game implements Data {
     const t = a.type;
 
     switch (t) {
-      case 'join': {
-        const player = this.player(a.player.id) || this.players.all[this.players.all.push(a.player) - 1];
+      case "join": {
+        const player =
+          this.player(a.player.id) ||
+          this.players.all[this.players.all.push(a.player) - 1];
 
         player.name = a.player.name;
-        player.active = this.state.type != 'waiting' || this.state.ready.includes(player.id);
+        player.active =
+          this.state.type != "waiting" || this.state.ready.includes(player.id);
         player.disconnected = null;
 
         break;
       }
 
-      case 'ready':
-        assume(this.state.type === 'waiting');
-        this.state.ready.push(a.player);
-        this.player(a.player)!.active = true;
-        break;
+      case "ready": {
+        assume(this.state.type === "waiting");
+        const player = this.player(a.player);
+        if (!player) break;
 
-      case 'leave':
+        player.active = true;
+        this.state.ready.push(a.player);
+
+        break;
+      }
+
+      case "leave":
         this.players.all = this.players.all.filter((p) => p.id !== a.player);
         break;
 
-      case 'disconnect':
-        const player = this.player(a.player)!;
+      case "disconnect": {
+        const player = this.player(a.player);
+        if (!player) break;
+
         player.active = false;
         player.disconnected = new Date();
+
         break;
+      }
 
-      case 'init':
-        assume(this.state.type === 'waiting');
+      case "init": {
+        assume(this.state.type === "waiting");
 
-        const players = a.players.map((id, i) => ({
-          ...this.player(id)!,
-          color: a.colors[i],
-        }));
+        const players: Player[] = [];
+
+        a.players.forEach((id, i) => {
+          const player = this.player(id);
+          if (!player) return;
+
+          players.push({
+            ...player,
+            color: a.colors[i],
+          });
+        });
 
         this.players.all = players;
 
         this.board.commit(a);
-        this.state = { type: 'select', player: this.players.all[0].id };
+        this.state = { type: "select", player: this.players.all[0].id };
 
         break;
+      }
 
-      case 'next': {
+      case "next": {
         assume(
-          this.state.type === 'select' ||
-            this.state.type === 'selected' ||
-            this.state.type === 'stepped' ||
-            this.state.type === 'jumped'
+          this.state.type === "select" ||
+            this.state.type === "selected" ||
+            this.state.type === "stepped" ||
+            this.state.type === "jumped"
         );
 
-        const player = this.player(this.state.player)!;
+        const player = this.player(this.state.player);
+        if (!player) break;
+
         const winners = this.board.winners();
 
         if (winners.has(player.color)) {
-          const place = Math.max(...this.players.all.map((p) => p.finished)) + 1;
+          const place =
+            Math.max(...this.players.all.map((p) => p.finished)) + 1;
           player.finished = place;
         }
 
         if (winners.size === this.players.all.length - 1) {
-          for (const player of this.players.all) player.finished ||= this.players.all.length;
+          for (const player of this.players.all)
+            player.finished ||= this.players.all.length;
         }
 
         const players = this.players.all.filter((p) => p.finished === 0);
         const next = players[(players.indexOf(player) + 1) % players.length];
 
-        this.state = next ? { type: 'select', player: next.id } : { type: 'finished' };
+        this.state = next
+          ? { type: "select", player: next.id }
+          : { type: "finished" };
 
         break;
       }
 
-      case 'select':
-        this.state = { type: 'selected', player: a.player, piece: a.piece };
+      case "select":
+        this.state = { type: "selected", player: a.player, piece: a.piece };
         break;
 
-      case 'step': {
-        assume(this.state.type === 'selected');
+      case "step": {
+        assume(this.state.type === "selected");
 
-        const color = this.player(a.player)!.color;
+        const color = this.player(a.player)?.color;
+        if (!color) break;
         this.board.commit({ ...a, color, from: this.state.piece });
-        this.state = { type: 'stepped', player: a.player };
+        this.state = { type: "stepped", player: a.player };
 
         break;
       }
 
-      case 'jump': {
-        assume(this.state.type === 'selected' || this.state.type === 'jumped');
+      case "jump": {
+        assume(this.state.type === "selected" || this.state.type === "jumped");
 
-        const color = this.player(a.player)!.color;
+        const color = this.player(a.player)?.color;
+        if (!color) break;
         this.board.commit({ ...a, color, from: this.state.piece });
-        this.state = { type: 'jumped', player: a.player, piece: a.to };
+        this.state = { type: "jumped", player: a.player, piece: a.to };
 
         break;
       }

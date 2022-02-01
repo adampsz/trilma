@@ -7,42 +7,42 @@ html {
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  height: 100%;
   background-color: $background;
   color: $foreground;
-  height: 100%;
+  font-family: Nunito, sans-serif;
 }
 
 a {
-  text-decoration: none;
   color: $primary;
+  text-decoration: none;
 }
 
 .input {
+  min-height: 2em;
+  padding: 0 0.5em;
+  border: 2px solid $foreground;
+  margin: 0;
   appearance: none;
   background: none;
-  border: 2px solid $foreground;
   border-radius: 2px;
-  margin: 0;
-  padding: 0 0.5em;
   line-height: 2em;
-  min-height: 2em;
   outline-color: $primary;
   transition: border $transition;
 }
 
 .button {
-  cursor: pointer;
   display: inline-block;
-  appearance: none;
-  color: $background;
-  border: 2px solid $foreground;
-  text-decoration: none;
-  border-radius: 2px;
-  background: $foreground;
-  padding: 0.5em;
   min-width: 2em;
   min-height: 2em;
+  padding: 0.5em;
+  border: 2px solid $foreground;
+  appearance: none;
+  background: $foreground;
+  border-radius: 2px;
+  color: $background;
+  cursor: pointer;
+  text-decoration: none;
   transition: background-color $transition;
 
   &:active {

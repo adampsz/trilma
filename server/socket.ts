@@ -1,19 +1,21 @@
-import { Server as Io } from 'socket.io';
-import { session } from './express';
-import Game from './game/Game';
+import { Server as Io } from "socket.io";
+import { session } from "./express";
+import Game from "./game/Game";
 
-import type { Request, Response } from 'express';
-import type { Socket } from '@/server/types';
+import type { Request, Response } from "express";
+import type { Socket } from "@/server/types";
 
 const io = new Io({
   serveClient: false,
 });
 
 io.use((socket, next) => {
-  session(socket.request as Request, {} as Response, (err) => next(err));
+  session(socket.request as Request, {} as Response, (err) =>
+    next(err as Error)
+  );
 });
 
-io.on('connection', (socket: Socket) => {
+io.on("connection", (socket: Socket) => {
   const req = socket.request;
 
   if (!req.session.room) return socket.disconnect();

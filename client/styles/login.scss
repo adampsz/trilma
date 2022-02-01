@@ -1,15 +1,14 @@
 #login {
-  min-height: 100%;
   display: flex;
+  min-height: 100%;
   align-items: center;
   justify-content: center;
 
   form {
     display: grid;
-
     gap: 1rem;
-    grid-template-rows: auto auto;
     grid-template-columns: auto minmax(120px, min-content);
+    grid-template-rows: auto auto;
 
     & > h2 {
       grid-column: span 2;

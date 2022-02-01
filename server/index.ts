@@ -1,13 +1,13 @@
-import 'dotenv/config';
+import "dotenv/config";
 
-import app from './express';
-import io from './socket';
+import app from "./express";
+import io from "./socket";
 
-import { createServer } from 'http';
+import { createServer } from "http";
 
 const http = createServer();
 
-http.on('request', app);
+http.on("request", app);
 io.attach(http);
 
 http.listen(process.env.PORT ?? 3000);
