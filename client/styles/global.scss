@@ -18,6 +18,13 @@ a {
   text-decoration: none;
 }
 
+pre {
+  padding: 1rem;
+  background-color: rgba($foreground, 0.1);
+  border-radius: 2px;
+  white-space: pre-wrap;
+}
+
 .input {
   min-height: 2em;
   padding: 0 0.5em;
@@ -60,4 +67,13 @@ a {
 
 .hint {
   opacity: 0.5;
+}
+
+.centerbox {
+  display: grid;
+  max-width: 50rem;
+  min-height: 100%;
+  padding: 1rem;
+  margin: 0 auto;
+  place-content: center;
 }

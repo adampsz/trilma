@@ -1,0 +1,16 @@
+extends layout
+
+block data
+    - title = 'Error'
+    -
+        const messages = [ "Error!", "Oops!", "Ugh.", "Ouch." ];
+
+        function exclaim() {
+            return messages[Math.floor(Math.random() * messages.length)];
+        }
+
+
+block content
+    #error.centerbox
+        h1 #{ err.status === 404 ? 'There is nothing here' : exclaim() }
+        h3 #{ err.message }

@@ -6,13 +6,21 @@ module.exports = {
     project: "tsconfig.json",
   },
   plugins: ["@typescript-eslint"],
-  extends: ["eslint:recommended", "prettier"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+  ],
+
+  rules: {
+    eqeqeq: ["warn", "always"],
+    "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_" }],
+  },
 
   overrides: [
     {
       files: ["*.{ts,tsx}"],
       extends: [
-        "plugin:@typescript-eslint/recommended",
         "plugin:@typescript-eslint/recommended-requiring-type-checking",
       ],
     },
