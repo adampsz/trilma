@@ -26,6 +26,7 @@ pre {
 }
 
 .input {
+  min-width: 5rem;
   min-height: 2em;
   padding: 0 0.5em;
   border: 2px solid $foreground;
@@ -40,7 +41,7 @@ pre {
 
 .button {
   display: inline-block;
-  min-width: 2em;
+  min-width: 5rem;
   min-height: 2em;
   padding: 0.5em;
   border: 2px solid $foreground;
@@ -71,9 +72,10 @@ pre {
 
 .centerbox {
   display: grid;
-  max-width: 50rem;
+  max-width: 40rem;
   min-height: 100%;
   padding: 1rem;
   margin: 0 auto;
+  gap: 1rem;
   place-content: center;
 }

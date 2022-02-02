@@ -1,13 +1,8 @@
 #login {
-  display: flex;
-  min-height: 100%;
-  align-items: center;
-  justify-content: center;
-
   form {
     display: grid;
     gap: 1rem;
-    grid-template-columns: auto minmax(120px, min-content);
+    grid-template-columns: auto minmax(5rem, min-content);
     grid-template-rows: auto auto;
 
     & > h2 {

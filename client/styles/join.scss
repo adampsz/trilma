@@ -1,13 +1,10 @@
-#join {
-  display: grid;
-  min-height: 100%;
-  gap: 1rem;
-  place-content: center;
+@use "sass:color";
 
-  .create {
+#join {
+  & .create {
     display: grid;
     gap: 1rem;
-    grid-template-columns: auto minmax(120px, min-content);
+    grid-template-columns: auto minmax(5rem, min-content);
     grid-template-rows: auto auto;
 
     & > h2 {
@@ -15,12 +12,15 @@
     }
   }
 
-  .join {
-    ul {
+  & .join {
+    & ul {
       padding: 0;
+      border-right: 2px solid $hint;
       list-style-type: none;
 
       & li {
+        display: inline-block;
+        width: 33%;
         padding: 0.5rem;
         border-left: 4px solid $foreground;
         margin: 0.5rem 0;
@@ -30,8 +30,10 @@
         }
 
         @each $name, $color in $colors {
-          &:nth-child(6n + #{$name}) {
-            border-color: $color;
+          @if color.lightness($color) < 75% {
+            &:nth-child(5n + #{$name}) {
+              border-color: $color;
+            }
           }
         }
       }
