@@ -2,8 +2,10 @@ import { sync as uid } from "uid-safe";
 import Base from "@/common/Game";
 import Board from "./Board";
 
+import { io } from "../bootstrap";
+
 import type { Game as Data, Action } from "@/common/types";
-import type { Io, Socket } from "@/server/types";
+import type { Socket } from "@/server/types";
 
 const FLUSH_INTERVAL =
   process.env.NODE_ENV === "development" ? 10 * 1000 : 2 * 60 * 1000;
@@ -11,7 +13,6 @@ const FLUSH_INTERVAL =
 setInterval(() => Game.flush(), FLUSH_INTERVAL);
 
 export default class Game extends Base {
-  io: Io;
   id: string;
   name: string;
 
@@ -19,10 +20,9 @@ export default class Game extends Base {
 
   static all = new Map<string, Game>();
 
-  constructor(io: Io, name: string) {
+  constructor(name: string) {
     super();
 
-    this.io = io;
     this.id = uid(24);
     this.name = name;
 
@@ -35,8 +35,8 @@ export default class Game extends Base {
     );
   }
 
-  static create(io: Io, name: string) {
-    const game = new this(io, name);
+  static create(name: string) {
+    const game = new this(name);
     this.all.set(game.id, game);
     return game.id;
   }
@@ -136,8 +136,7 @@ export default class Game extends Base {
 
   commit(a: Action) {
     super.commit(a);
-    this.io.to(this.id).emit("game:action", a);
-
+    io.to(this.id).emit("game:action", a);
     if (a.type === "ready") this.try_init();
   }
 

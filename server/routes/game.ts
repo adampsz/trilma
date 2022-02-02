@@ -1,5 +1,4 @@
 import { Router } from "express";
-import io from "../socket";
 import Game from "../game/Game";
 import type { Request, Response } from "express";
 
@@ -12,7 +11,7 @@ router.get("/join", (req: Request, res: Response) => {
 
 router.post("/join", (req: Request, res: Response) => {
   if (typeof req.body.name !== "string") return res.redirect("/join");
-  req.session.room = Game.create(io, req.body.name.slice(0, 16));
+  req.session.room = Game.create(req.body.name.slice(0, 16));
   res.redirect("/game");
 });
 

@@ -4,6 +4,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const externals = require("webpack-node-externals");
 
 module.exports = (env, argv) => {
   const config = {
@@ -65,11 +66,11 @@ module.exports = (env, argv) => {
 
     target: "node",
 
-    externals({ request }, callback) {
-      if (request.startsWith(".")) return callback();
-      if (request.startsWith("@/")) return callback();
-      return callback(null, `commonjs ${request}`);
-    },
+    externals: externals({
+      modulesFromFile: {
+        fileName: path.join(__dirname, "server/package.json"),
+      },
+    }),
 
     plugins: [
       new CopyPlugin({
