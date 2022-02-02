@@ -18,11 +18,23 @@ a {
   text-decoration: none;
 }
 
-pre {
-  padding: 1rem;
+code {
+  padding: 0 2px;
   background-color: rgba($foreground, 0.1);
   border-radius: 2px;
   white-space: pre-wrap;
+}
+
+pre > code {
+  padding: 1rem;
+}
+
+kbd {
+  padding: 0 2px;
+  border: 1px solid $foreground;
+  background-color: rgba($foreground, 0.1);
+  border-radius: 2px;
+  box-shadow: 0 2px rgba($foreground, 0.3);
 }
 
 .input {
@@ -76,6 +88,22 @@ pre {
   min-height: 100%;
   padding: 1rem;
   margin: 0 auto;
-  gap: 1rem;
   place-content: center;
+}
+
+.links {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+
+  & a {
+    color: inherit;
+  }
+
+  & svg {
+    width: 1.5em;
+    height: 1.5em;
+    margin-left: 0.5rem;
+    fill: currentcolor;
+  }
 }
