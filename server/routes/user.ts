@@ -1,4 +1,5 @@
 import { Router } from "express";
+import error from "http-errors";
 import type { Request, Response } from "express";
 
 const router = Router();
@@ -8,9 +9,11 @@ router.get("/", (req, res) => {
   res.render("login", { req });
 });
 
-router.post("/", (req: Request, res: Response) => {
-  if (typeof req.body.name === "string")
-    req.session.name = req.body.name.slice(0, 16);
+router.post("/", (req: Request, res: Response, next) => {
+  if (typeof req.body.name !== "string" || req.body.name.length > 16)
+    return next(new error.BadRequest());
+
+  req.session.name = req.body.name.slice(0, 16);
   res.redirect("/");
 });
 

@@ -14,3 +14,6 @@ block content
     #error.centerbox
         h1 #{ err.status === 404 ? 'There is nothing here' : exclaim() }
         h3 #{ err.message }
+        
+        if err.status < 500
+            p But! You can always return to the #[a(href="/") main page] and hope that error will disappear.
