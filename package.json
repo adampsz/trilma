@@ -2,6 +2,7 @@
   "name": "trilma",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "pnpm@6.29.1",
   "scripts": {
     "build:dev": "webpack --mode=development -w",
     "start:dev": "cd server && node-dev --notify=false .",
