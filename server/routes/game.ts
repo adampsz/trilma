@@ -20,14 +20,14 @@ router.post("/join", (req: Request, res, next) => {
     return next(new error.BadRequest());
 
   req.session.room = Game.create(req.body.name);
-  res.redirect("/game");
+  req.session.save(() => res.redirect("/game"));
 });
 
 router.get("/join/:id", (req, res, next) => {
   if (!Game.all.has(req.params.id)) return next(new error.NotFound());
 
   req.session.room = req.params.id;
-  res.redirect("/game");
+  req.session.save(() => res.redirect("/game"));
 });
 
 router.get("/game", (req, res, next) => {

@@ -15,6 +15,7 @@ setInterval(() => Game.flush(), FLUSH_INTERVAL);
 export default class Game extends Base {
   id: string;
   name: string;
+  created: Date;
 
   board: Board;
 
@@ -25,6 +26,7 @@ export default class Game extends Base {
 
     this.id = uid(24);
     this.name = name;
+    this.created = new Date();
 
     this.board = new Board();
   }
@@ -53,17 +55,23 @@ export default class Game extends Base {
 
   static flush() {
     const stale = new Set<string>();
+    const now = Date.now();
 
     for (const [id, game] of this.all) {
       for (const player of game.players.all)
         if (
           player.disconnected &&
           player.disconnected.getTime() + FLUSH_INTERVAL < Date.now()
-        )
+        ) {
           game.commit({ type: "leave", player: player.id });
+        }
 
-      if (game.state.type === "finished" || game.players.all.length === 0)
+      if (
+        now - game.created.getTime() > FLUSH_INTERVAL &&
+        (game.state.type === "finished" || game.players.all.length === 0)
+      ) {
         stale.add(id);
+      }
     }
 
     for (const id of stale) this.all.delete(id);

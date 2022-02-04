@@ -44,5 +44,5 @@ server.on("request", app);
 io.attach(server);
 
 server.listen(process.env.PORT ?? 3000, () => {
-  console.log(`Listening on http://localhost:${process.env.port ?? 3000}`);
+  console.debug(`Listening on http://localhost:${process.env.port ?? 3000}`);
 });

@@ -9,6 +9,7 @@ import morgan from "morgan";
 import helmet from "helmet";
 import session from "express-session";
 import compression from "compression";
+import fileStore from "session-file-store";
 
 import type { Request, Response, RequestHandler, NextFunction } from "express";
 import type { Io } from "./types";
@@ -25,6 +26,10 @@ use(
     resave: false,
     saveUninitialized: false,
     secret: process.env.SECRET ?? "",
+    store: new (fileStore(session))({
+      path: path.join(__dirname, "../../sessions"),
+      retries: 0,
+    }),
   })
 );
 

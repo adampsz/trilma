@@ -13,8 +13,8 @@ router.post("/", (req: Request, res: Response, next) => {
   if (typeof req.body.name !== "string" || req.body.name.length > 16)
     return next(new error.BadRequest());
 
-  req.session.name = req.body.name.slice(0, 16);
-  res.redirect("/");
+  req.session.name = req.body.name;
+  req.session.save(() => res.redirect("/"));
 });
 
 export default router;
