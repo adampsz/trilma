@@ -32,3 +32,9 @@ Alternatively, you can generate tarball containing only necessary code without s
   $ pnpm run build:dev
   $ pnpm run start:dev
 ```
+
+## Screenshots
+
+![Waiting](./screenshots/waiting.png)
+![Game](./screenshots/game.png)
+![Hub](./screenshots/hub.png)
